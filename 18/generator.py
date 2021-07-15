@@ -63,8 +63,10 @@ def generate_path(n):
 	for i in range(n):
 		for j in range(n):
 			matrix[i][j] = randint(1, 100)
+# 	c > a so we guarantee every cell is visited once
 	global a, b, c, d
-	a, b, c, d = randint(1, 5), randint(1, 5), randint(1, 5), randint(1, 5)
+	a, b = randint(1, 4), randint(1, 5)
+	c, d =  randint(a + 1, 5), randint(1, 5) 
 	template = '''Квадрат разлинован на N×N клеток (1 < N < 17). В каждой клетке квадрата лежит монета достоинством
 от 1 до 100. Исполнитель Робот встает в произвольную клетку поля, после чего делает следующий алгоритм:
 Сделай {0} шагов вправо;
