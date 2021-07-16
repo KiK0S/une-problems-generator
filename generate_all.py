@@ -29,6 +29,8 @@ tex_template = '''
 \\end{{document}}
 '''
 
+ok = 0
+
 for n in numbers:
 	for i in range(1, 21):
 		values = json.loads(popen("python3 " + str(n) + "/generator.py").read())
@@ -41,7 +43,7 @@ for n in numbers:
 		with open("output/" + str(n) + "/" + str(i).zfill(2) + ".statement.tex", "w") as f:
 			result = tex_template.format(str(n) + "\\_" + str(i), str(values[0]).replace('≤', '$ \\le $').replace('\n', '\\\\').replace('*', '$\\cdot$'))
 			f.write(result)
-		system('pdflatex -shell-escape -output-directory=output/' + str(n) + " " + 'output' + '/' + str(n) + '/' + str(i).zfill(2) + ".statement.tex")
+		ok |= system('pdflatex -shell-escape -output-directory=output/' + str(n) + " " + 'output' + '/' + str(n) + '/' + str(i).zfill(2) + ".statement.tex")
 		with open("output/" + str(n) + "/" + str(i).zfill(2) + ".ans.txt", "w") as f:
 			f.write(str(values[1]))
 		if values[2] != '':
@@ -52,3 +54,4 @@ for n in numbers:
 		system('rm output/' + str(n) + '/' + str(i).zfill(2) + '.statement.out')
 		system('rm output/' + str(n) + '/' + str(i).zfill(2) + '.statement.tex')
 		system('rm output/' + str(n) + '/' + str(i).zfill(2) + '.statement.log')
+assert ok == 0
