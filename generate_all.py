@@ -1,7 +1,7 @@
 from os import system, popen
 import json
 
-numbers = ['25'] #'16', '17', '18', '24', '25', '26', '27.a', '27.b']
+numbers = ['16', '17', '18', '24', '25', '26', '27.a', '27.b']
 
 tex_template = '''
 \\documentclass[12pt]{{article}}
@@ -32,6 +32,7 @@ tex_template = '''
 for n in numbers:
 	for i in range(1, 21):
 		values = json.loads(popen("python3 " + str(n) + "/generator.py").read())
+		system("mkdir -p output/" + str(n))
 		system("touch output/" + str(n) + "/" + str(i).zfill(2) + ".statement.txt")
 		system("touch output/" + str(n) + "/" + str(i).zfill(2) + ".statement.tex")
 		system("touch output/" + str(n) + "/" + str(i).zfill(2) + ".ans.txt")

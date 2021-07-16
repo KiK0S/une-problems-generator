@@ -85,6 +85,7 @@ N строк содержит целое число от -5000 до 5000.
 				cur += output[i]
 				mods[output[i] % b] = max(mods[output[i] % b], -output[i])
 			else:
+				# BUG: надо b - output % b
 				mods[((output[i] % b) + b % b)] = max(mods[((output[i] % b) + b % b)], output[i])
 			
 		if a == '':
