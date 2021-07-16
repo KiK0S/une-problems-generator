@@ -16,6 +16,7 @@ RUN apt-get -y install \
 	texlive-pictures \
 	texlive-latex-extra \
 	texlive-latex-recommended \
+	texlive-lang-cyrillic \
 	python3 \
 	python3-pip
 
