@@ -20,7 +20,6 @@ RUN apt-get -y install \
 	python3-pip
 
 COPY . /opt/app
-RUN python3 -m pip install -r /opt/app/requirements.txt
 RUN chmod +x /opt/app/entrypoint.sh
 
 ENTRYPOINT ["/opt/app/entrypoint.sh"]
