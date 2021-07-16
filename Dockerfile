@@ -16,7 +16,7 @@ RUN apt-get -y install \
 	texlive-pictures \
 	texlive-latex-extra \
 	texlive-latex-recommended \
-	python3
+	python3 \
 	python3-pip
 
 RUN python3 -m pip install -r requirements.txt
