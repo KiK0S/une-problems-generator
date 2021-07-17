@@ -42,7 +42,10 @@ N строк содержит два натуральных числа, не п�
 			best = c[1](output[i][0], output[i][1])
 			other = output[i][0] + output[i][1] - best
 			cur += best
-			mods[((best - other) % b + b) % b] = c[1](mods[((best - other) % b + b) % b], other - best)
+			forward_mod = (best - other) % b
+			if other > best:
+				forward_mod = (other - best) % b
+			mods[forward_mod] = c[1](mods[forward_mod], other - best)
 		if a == '':
 			if cur % b == 0:
 				return cur
@@ -85,8 +88,8 @@ N строк содержит целое число от -5000 до 5000.
 				cur += output[i]
 				mods[output[i] % b] = max(mods[output[i] % b], -output[i])
 			else:
-				# BUG: надо b - output % b
-				mods[((output[i] % b) + b % b)] = max(mods[((output[i] % b) + b % b)], output[i])
+				mirror_mod = (b - output[i] % b) % b
+				mods[mirror_mod] = max(mods[mirror_mod], output[i])
 			
 		if a == '':
 			if cur % b == 0:
