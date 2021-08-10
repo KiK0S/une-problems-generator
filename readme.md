@@ -19,4 +19,4 @@
 
 # Пример
 
-![example.png]()
+![](example.png)
