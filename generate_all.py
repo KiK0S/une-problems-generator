@@ -1,7 +1,9 @@
 from os import system, popen
 import json
 
+copy_count = 20
 numbers = ['16', '17', '18', '24', '25', '26', '27.a', '27.b']
+enable_pdf = True
 
 tex_template = '''
 \\documentclass[12pt]{{article}}
@@ -32,26 +34,30 @@ tex_template = '''
 ok = 0
 
 for n in numbers:
-	for i in range(1, 21):
+	for i in range(1, copy_count + 1):
 		values = json.loads(popen("python3 " + str(n) + "/generator.py").read())
 		system("mkdir -p output/" + str(n))
 		system("touch output/" + str(n) + "/" + str(i).zfill(2) + ".statement.txt")
-		system("touch output/" + str(n) + "/" + str(i).zfill(2) + ".statement.tex")
 		system("touch output/" + str(n) + "/" + str(i).zfill(2) + ".ans.txt")
 		with open("output/" + str(n) + "/" + str(i).zfill(2) + ".statement.txt", "w") as f:
 			f.write(str(values[0]))
-		with open("output/" + str(n) + "/" + str(i).zfill(2) + ".statement.tex", "w") as f:
-			result = tex_template.format(str(n) + "\\_" + str(i), str(values[0]).replace('≤', '$ \\le $').replace('\n', '\\\\').replace('*', '$\\cdot$'))
-			f.write(result)
-		ok |= system('pdflatex -shell-escape -output-directory=output/' + str(n) + " " + 'output' + '/' + str(n) + '/' + str(i).zfill(2) + ".statement.tex")
+		
+		if enable_pdf:
+			system("touch output/" + str(n) + "/" + str(i).zfill(2) + ".statement.tex")
+			with open("output/" + str(n) + "/" + str(i).zfill(2) + ".statement.tex", "w") as f:
+				result = tex_template.format(str(n) + "\\_" + str(i), str(values[0]).replace('≤', '$ \\le $').replace('\n', '\\\\').replace('*', '$\\cdot$'))
+				f.write(result)
+			ok |= system('pdflatex -shell-escape -output-directory=output/' + str(n) + " " + 'output' + '/' + str(n) + '/' + str(i).zfill(2) + ".statement.tex")
+			system('rm output/' + str(n) + '/' + str(i).zfill(2) + '.statement.aux')
+			system('rm output/' + str(n) + '/' + str(i).zfill(2) + '.statement.out')
+			system('rm output/' + str(n) + '/' + str(i).zfill(2) + '.statement.tex')
+			system('rm output/' + str(n) + '/' + str(i).zfill(2) + '.statement.log')
+
 		with open("output/" + str(n) + "/" + str(i).zfill(2) + ".ans.txt", "w") as f:
 			f.write(str(values[1]))
 		if values[2] != '':
 			system("touch output/" + str(n) + "/" + str(i).zfill(2) + ".in.txt")
 			with open("output/" + str(n) + "/" + str(i).zfill(2) + ".in.txt", "w") as f:
 				f.write(str(values[2]))
-		system('rm output/' + str(n) + '/' + str(i).zfill(2) + '.statement.aux')
-		system('rm output/' + str(n) + '/' + str(i).zfill(2) + '.statement.out')
-		system('rm output/' + str(n) + '/' + str(i).zfill(2) + '.statement.tex')
-		system('rm output/' + str(n) + '/' + str(i).zfill(2) + '.statement.log')
+		
 assert ok == 0
